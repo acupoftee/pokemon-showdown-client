@@ -1,4 +1,4 @@
-d client const assert = require('assert');
+const assert = require('assert');
 
 describe('Teambuilder search uses format-mod Dex', function () {
   it('search backend should use the modded Dex when format has a mod (gen5sgss)', function () {
