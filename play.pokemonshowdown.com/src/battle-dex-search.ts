@@ -598,11 +598,19 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		this.baseResults = null;
 		this.baseIllegalResults = null;
 
-		if (format.startsWith('gen')) {
-			const gen = (Number(format.charAt(3)) || 6);
-			format = (format.slice(4) || 'customgame') as ID;
-			this.dex = Dex.forGen(gen);
-		} else if (!format) {
+		// Prefer using the full format id to select the appropriate Dex
+		// This allows formats with an explicit mod to get a modded Dex
+		// instead of a plain historical-gen Dex
+		// Keep format mutated to the post-gen slice used by the old parsing below
+		const origFormat = format;
+		if (origFormat) {
+			// Dex.forFormat knows how to prefer a format's explicit mod and
+			// also handles the standard special cases (letsgo/bdsp/legends)
+			this.dex = Dex.forFormat(origFormat);
+			if (origFormat.startsWith('gen')) {
+				format = (origFormat.slice(4) || 'customgame') as ID;
+			}
+		} else {
 			this.dex = Dex;
 		}
 
