@@ -9,7 +9,7 @@ const rootDir = path.resolve(__dirname, '..');
 process.chdir(rootDir);
 
 if (!fs.existsSync('caches/pokemon-showdown')) {
-	child_process.execSync('git clone https://github.com/smogon/pokemon-showdown.git', {
+	child_process.execSync('git clone https://github.com/acupoftee/pokemon-showdown.git', {
 		cwd: 'caches',
 	});
 }
@@ -1211,7 +1211,6 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		const genData = genDex.data;
 		const nextGenDex = Dex.mod(nextGen);
 		const nextGenData = nextGenDex.data;
-
 		const overrideSpeciesData = {};
 		BattleTeambuilderTable[gen].overrideSpeciesData = overrideSpeciesData;
 		for (const id in genData.Pokedex) {
@@ -1287,11 +1286,12 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 	// Mods
 	//
 
-	for (const mod of ['gen3rs', 'gen5bw1', 'gen7letsgo', 'gen8bdsp', 'gen9ssb', 'gen9legendsou']) {
+	for (const mod of ['gen3rs', 'gen5bw1', 'gen5sgss', 'gen7letsgo', 'gen8bdsp', 'gen9ssb', 'gen9legendsou']) {
 		const modDex = Dex.mod(mod);
 		const modData = modDex.data;
 		const parentDex = Dex.forGen(modDex.gen);
 
+		if (!BattleTeambuilderTable[mod]) BattleTeambuilderTable[mod] = {};
 		const overrideSpeciesData = {};
 		BattleTeambuilderTable[mod].overrideSpeciesData = overrideSpeciesData;
 		for (const id in modData.Pokedex) {

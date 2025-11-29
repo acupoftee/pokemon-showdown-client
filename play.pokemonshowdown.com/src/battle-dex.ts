@@ -271,9 +271,17 @@ export const Dex = new class implements ModdedDex {
 		return parseInt(formatid.charAt(3)) || Dex.gen;
 	}
 	forFormat(format: string) {
+		// Prefer an explicit mod on the client-side formats table if a format entry exists for the requested format
+		// This ensures formats with a mod(eg. "gen5sgss") return the expected ModdedDex instead of regular dex
+		const fullId = toID(format);
+		if (fullId) {
+			const entry = window.BattleFormats?.[fullId];
+			if (entry?.mod) return Dex.mod(entry.mod as ID);
+		}
+
 		let dex = Dex.forGen(Dex.formatGen(format));
 
-		const formatid = toID(format).slice(4);
+		const formatid = fullId.slice(4);
 		if (dex.gen === 7 && formatid.includes('letsgo')) {
 			dex = Dex.mod('gen7letsgo' as ID);
 		}
@@ -1060,7 +1068,7 @@ export class ModdedDex {
 			}
 			if (this.modid !== `gen${this.gen}`) {
 				const table = window.BattleTeambuilderTable[this.modid];
-				if (id in table.overrideAbilityData) {
+				if (table?.overrideAbilityData && id in table.overrideAbilityData) {
 					Object.assign(data, table.overrideAbilityData[id]);
 				}
 			}
@@ -1090,7 +1098,7 @@ export class ModdedDex {
 			}
 			if (this.modid !== `gen${this.gen}`) {
 				const table = window.BattleTeambuilderTable[this.modid];
-				if (id in table.overrideSpeciesData) {
+				if (table?.overrideSpeciesData && id in table.overrideSpeciesData) {
 					Object.assign(data, table.overrideSpeciesData[id]);
 				}
 			}
@@ -1099,7 +1107,7 @@ export class ModdedDex {
 			}
 
 			const table = window.BattleTeambuilderTable[this.modid];
-			if (id in table.overrideTier) data.tier = table.overrideTier[id];
+			if (table?.overrideTier && id in table.overrideTier) data.tier = table.overrideTier[id];
 			if (!data.tier && id.endsWith('totem')) {
 				data.tier = this.species.get(id.slice(0, -5)).tier;
 			}

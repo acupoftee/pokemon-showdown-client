@@ -22,17 +22,12 @@
 		focus: function () {
 			if (this.curTeam) {
 				this.curTeam.iconCache = '!';
-				this.curTeam.gen = this.getGen(this.curTeam.format);
-				this.curTeam.dex = Dex.forGen(this.curTeam.gen);
-				if (this.curTeam.format.includes('letsgo')) {
-					this.curTeam.dex = Dex.mod('gen7letsgo');
-				}
-				if (this.curTeam.format.includes('bdsp')) {
-					this.curTeam.dex = Dex.mod('gen8bdsp');
-				}
-				if (this.curTeam.format.includes('legends')) {
-					this.curTeam.dex = Dex.mod('gen9legendsou');
-				}
+				// Pick the correct Dex for the selected format. Dex.forFormat will
+				// return a modded Dex when window.BattleFormats[format].mod is set
+				// otherwise it falls back to a top level dex.
+				this.curTeam.dex = Dex.forFormat(this.curTeam.format);
+				// Keep the gen property in sync with whatever Dex.forFormat returned.
+				this.curTeam.gen = this.curTeam.dex.gen;
 				Storage.activeSetList = this.curSetList;
 			}
 		},
@@ -750,17 +745,8 @@
 			i = +i;
 			this.curTeam = teams[i];
 			this.curTeam.iconCache = '!';
-			this.curTeam.gen = this.getGen(this.curTeam.format);
-			this.curTeam.dex = Dex.forGen(this.curTeam.gen);
-			if (this.curTeam.format.includes('letsgo')) {
-				this.curTeam.dex = Dex.mod('gen7letsgo');
-			}
-			if (this.curTeam.format.includes('bdsp')) {
-				this.curTeam.dex = Dex.mod('gen8bdsp');
-			}
-			if (this.curTeam.format.includes('legends')) {
-				this.curTeam.dex = Dex.mod('gen9legendsou');
-			}
+			this.curTeam.dex = Dex.forFormat(this.curTeam.format);
+			this.curTeam.gen = this.curTeam.dex.gen;
 			Storage.activeSetList = this.curSetList = Storage.unpackTeam(this.curTeam.team);
 			this.curTeamIndex = i;
 			this.update();
@@ -1607,7 +1593,7 @@
 		changeFormat: function (format) {
 			this.curTeam.format = format;
 			this.curTeam.gen = this.getGen(this.curTeam.format);
-			this.curTeam.dex = Dex.forGen(this.curTeam.gen);
+			this.curTeam.dex = Dex.forFormat(this.curTeam.format);
 			if (this.curTeam.format.includes('letsgo')) {
 				this.curTeam.dex = Dex.mod('gen7letsgo');
 			}
@@ -2157,6 +2143,11 @@
 				}
 				if (type !== this.search.qType) {
 					this.$chart.scrollTop(0);
+				}
+				// Ensure format has mod field before creating search
+				var formatEntry = window.BattleFormats[this.curTeam.format];
+				if (formatEntry && !formatEntry.mod && this.curTeam.format === 'gen5sacredgoldstormsilver') {
+					formatEntry.mod = 'gen5sgss';
 				}
 				this.search.$inputEl = $inputEl;
 				this.search.setType(type, this.curTeam.format || 'gen9', this.curSet, cur);
