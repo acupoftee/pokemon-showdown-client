@@ -11,6 +11,15 @@
 			"problemMatcher": [],
 			"label": "npm: build",
 			"detail": "node build"
+		},
+		{
+			"label": "update-config-routes",
+			"type": "shell",
+			"command": "node build-tools/update",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
 		}
 	]
 }
