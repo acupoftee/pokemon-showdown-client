@@ -11,4 +11,4 @@ cmds = ["npm ci"]
 cmds = ["npm run build"]
 
 [start]
-cmd = "npx serve play.pokemonshowdown.com -l 0.0.0.0:$PORT -S"
+cmd = "npx serve play.pokemonshowdown.com -l 8080 -S"
