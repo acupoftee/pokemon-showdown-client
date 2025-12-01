@@ -1,8 +1,15 @@
+[providers]
+# Disable auto-detection, use only what we specify
+disabled = ["php"]
+
 [phases.setup]
-nixPkgs = ["nodejs", "python3"]
+nixPkgs = ["nodejs"]
+
+[phases.install]
+cmds = ["npm ci"]
 
 [phases.build]
-cmds = ["npm ci", "npm run build"]
+cmds = ["npm run build"]
 
 [start]
 cmd = "npx serve play.pokemonshowdown.com -l 8080 -S"
