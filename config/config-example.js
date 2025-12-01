@@ -22,7 +22,7 @@ Config.defaultserver = {
 	id: 'showdown',
 	host: 'steamgamessacredgold-up-railway-app.psim.us',
 	port: 443,
-	httpport: 8000,
+	httpport: 8080,
 	altport: 80,
 	registered: true
 };
