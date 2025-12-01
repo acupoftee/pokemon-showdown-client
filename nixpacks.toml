@@ -1,9 +1,8 @@
-[providers]
-# Disable auto-detection, use only what we specify
-disabled = ["php"]
-
 [phases.setup]
 nixPkgs = ["nodejs"]
+aptPkgs = []
+# Skip PHP detection
+onlyIncludeFiles = ["package.json", "package-lock.json"]
 
 [phases.install]
 cmds = ["npm ci"]
