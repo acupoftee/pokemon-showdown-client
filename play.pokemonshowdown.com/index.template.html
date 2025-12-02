@@ -112,13 +112,24 @@ https://psim.us/dev
 <script>
 	// framebust - see https://owasp.org/www-pdf-archive/OWASP_AppSec_Research_2010_Busting_Frame_Busting_by_Rydstedt.pdf
 	// should be robust against reflective XSS filters and navigation interception
-	var app;
-	if (self === top) {
-		app = new App();
-	} else {
-		LM.innerHTML += ' IN FRAME<br />Please visit Showdown directly.';
-		top.location = self.location;
-	}
+	(function initAppWhenReady() {
+		function start() {
+			if (typeof App !== 'function') return false;
+			var app;
+			if (self === top) {
+				app = new App();
+			} else {
+				LM.innerHTML += ' IN FRAME<br />Please visit Showdown directly.';
+				top.location = self.location;
+			}
+			return true;
+		}
+		if (!start()) {
+			// Try again after all scripts load
+			document.addEventListener('DOMContentLoaded', start);
+			window.addEventListener('load', start);
+		}
+	})();
 </script>
 
 <script src="//play.pokemonshowdown.com/data/pokedex.js?"></script>

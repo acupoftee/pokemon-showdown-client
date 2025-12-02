@@ -8,7 +8,11 @@ onlyIncludeFiles = ["package.json", "package-lock.json"]
 cmds = ["npm ci"]
 
 [phases.build]
-cmds = ["npm run build"]
+cmds = [
+  "npm run build",
+  "cp -r config play.pokemonshowdown.com/",
+  "cp -r data play.pokemonshowdown.com/"
+]
 
 [start]
-cmd = "npx serve . -l 8080 -S"
+cmd = "npx serve play.pokemonshowdown.com -l 8080 --single"

@@ -21,7 +21,7 @@ Config.whitelist = [
 Config.defaultserver = {
 	id: 'showdown',
 	host: 'steamgamessacredgold-up-railway-app.psim.us',
-	port: 443,
+	port: 8080,
 	httpport: 8080,
 	altport: 80,
 	registered: true
