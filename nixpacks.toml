@@ -11,6 +11,7 @@ cmds = ["npm ci"]
 cmds = [
   "npm run build",
   "cp -r config play.pokemonshowdown.com/",
+  "cp -r js play.pokemonshowdown.com"
 ]
 
 [start]
