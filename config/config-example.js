@@ -20,7 +20,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: 'localhost',
+	host: 'steamgamessacredgold-up-railway-app.psim.us',
 	port: 443,
 	httpport: 8080,
 	altport: 80,
