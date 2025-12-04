@@ -10,7 +10,7 @@ cmds = ["npm ci"]
 [phases.build]
 cmds = [
   "npm run build",
-  "cp -r config play.pokemonshowdown.com/",
+  "cp -f config/config.js play.pokemonshowdown.com/config/config.js"
 ]
 
 [start]
